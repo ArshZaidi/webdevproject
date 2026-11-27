@@ -1,0 +1,195 @@
+/* =========================================================================
+   animations.css — SHARED MOTION SYSTEM
+   Owners: Arsh + Kanish
+   ========================================================================= */
+
+/* ---------- 1. Page veil ---------- */
+.page-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: var(--ivory);
+  pointer-events: none;
+  animation: veilOut 0.75s var(--ease) 0.05s forwards;
+}
+
+@keyframes veilOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* ---------- 2. Scroll reveals ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal="fade"]   { transform: none; }
+[data-reveal="left"]   { transform: translate3d(-34px, 0, 0); }
+[data-reveal="right"]  { transform: translate3d(34px, 0, 0); }
+[data-reveal="scale"]  { transform: scale(0.94); }
+[data-reveal="blur"]   { filter: blur(10px); }
+[data-reveal="blur"]   { transform: translate3d(0, 18px, 0); }
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- 3. Parallax + scroll scale ---------- */
+[data-parallax] { will-change: transform; }
+[data-scale]    { will-change: transform; }
+
+.parallax-frame {
+  overflow: hidden;
+  border-radius: inherit;
+  position: relative;
+}
+
+.parallax-frame img {
+  width: 100%;
+  height: 118%;
+  object-fit: cover;
+  position: absolute;
+  inset: -9% 0 auto 0;
+}
+
+/* ---------- 4. Magnetic buttons ---------- */
+.magnetic {
+  transition: transform 0.45s var(--ease), background-color 0.4s var(--ease),
+              color 0.4s var(--ease), border-color 0.4s var(--ease),
+              box-shadow 0.4s var(--ease);
+}
+
+.magnetic > * { pointer-events: none; }
+
+/* ---------- 5. Animated counters ---------- */
+[data-counter] { font-variant-numeric: tabular-nums; }
+
+/* ---------- 6. Marquee ticker ---------- */
+.marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  padding-block: 18px;
+  background: var(--ivory-2);
+}
+
+.marquee__track {
+  display: flex;
+  gap: 48px;
+  width: max-content;
+  animation: marqueeScroll 34s linear infinite;
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 48px;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--olive);
+  white-space: nowrap;
+}
+
+.marquee__item::after {
+  content: "✦";
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--gold);
+}
+
+@keyframes marqueeScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ---------- 7. Custom cursor ---------- */
+.fm-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(18, 54, 42, 0.35);
+  pointer-events: none;
+  z-index: 4000;
+  transform: translate3d(-100px, -100px, 0);
+  transition: width 0.35s var(--ease), height 0.35s var(--ease),
+              background-color 0.35s var(--ease), border-color 0.35s var(--ease),
+              opacity 0.3s var(--ease);
+  opacity: 0;
+  mix-blend-mode: multiply;
+}
+
+.fm-cursor.is-active { opacity: 1; }
+
+.fm-cursor.is-hover {
+  width: 58px;
+  height: 58px;
+  background: rgba(190, 159, 96, 0.16);
+  border-color: rgba(190, 159, 96, 0.5);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .fm-cursor { display: none; }
+}
+
+/* ---------- 8. Booking confirmation check ---------- */
+.confirm-check circle,
+.confirm-check path {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: drawStroke 1s var(--ease) forwards;
+}
+.confirm-check path { animation-delay: 0.45s; }
+
+@keyframes drawStroke {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- 9. Skeleton shimmer ---------- */
+.shimmer {
+  background: linear-gradient(100deg, var(--ivory-2) 30%, var(--ivory-3) 50%, var(--ivory-2) 70%);
+  background-size: 220% 100%;
+  animation: shimmerMove 1.6s linear infinite;
+}
+
+@keyframes shimmerMove {
+  from { background-position: 120% 0; }
+  to   { background-position: -120% 0; }
+}
+
+/* ---------- 10. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .page-veil { display: none; }
+  .marquee__track { animation: none; }
+  .fm-cursor { display: none; }
+
+  .confirm-check circle,
+  .confirm-check path { stroke-dashoffset: 0; animation: none; }
+}

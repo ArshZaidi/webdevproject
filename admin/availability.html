@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Availability — Aurum Kitchen Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <a class="admin-brand" href="dashboard.html">
+        <span class="nav__mark">A</span>
+        <span class="admin-brand__text"><strong>Aurum</strong><em>Admin</em></span>
+      </a>
+      <nav class="admin-nav" aria-label="Admin">
+        <a href="dashboard.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>Dashboard</span></a>
+        <a href="bookings.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span>Bookings</span><span class="admin-nav__count" id="navPendingCount"></span></a>
+        <a href="menu-management.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M12 3v18"/><circle cx="12" cy="11" r="9"/></svg><span>Menu</span></a>
+        <a href="availability.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><span>Availability</span></a>
+      </nav>
+      <div class="admin-sidebar__foot">
+        <a href="../index.html" class="admin-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to customer site</a>
+      </div>
+    </aside>
+
+    <header class="admin-topbar">
+      <button class="admin-topbar__toggle" id="adminNavToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+      <div class="admin-topbar__title">
+        <span class="eyebrow">Control</span>
+        <h1>Availability</h1>
+      </div>
+      <div class="admin-topbar__meta">
+        <span class="admin-topbar__clock" id="adminClock"></span>
+        <span class="admin-avatar">K</span>
+      </div>
+    </header>
+
+    <main class="admin-main" id="adminAvailability">
+      <section class="admin-card">
+        <div class="admin-card__head">
+          <div>
+            <h2>Dish availability</h2>
+            <p class="admin-card__sub">Toggle dishes on or off. Changes are reflected instantly on the customer menu.</p>
+          </div>
+          <div class="admin-toolbar__actions">
+            <button class="btn btn--ghost btn--sm" id="setAllAvailable">All available</button>
+            <button class="btn btn--ghost btn--sm" id="setAllUnavailable">All sold out</button>
+          </div>
+        </div>
+        <div class="availability-list" id="availabilityList"></div>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      <span>© <span id="adminYear"></span> Aurum Kitchen · Admin panel</span>
+      <span>Frontend demo · Data in <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/customer.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

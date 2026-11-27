@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bookings — Aurum Kitchen Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <a class="admin-brand" href="dashboard.html">
+        <span class="nav__mark">A</span>
+        <span class="admin-brand__text"><strong>Aurum</strong><em>Admin</em></span>
+      </a>
+      <nav class="admin-nav" aria-label="Admin">
+        <a href="dashboard.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>Dashboard</span></a>
+        <a href="bookings.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span>Bookings</span><span class="admin-nav__count" id="navPendingCount"></span></a>
+        <a href="menu-management.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M12 3v18"/><circle cx="12" cy="11" r="9"/></svg><span>Menu</span></a>
+        <a href="availability.html" class="admin-nav__link" data-admin-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><span>Availability</span></a>
+      </nav>
+      <div class="admin-sidebar__foot">
+        <a href="../index.html" class="admin-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to customer site</a>
+      </div>
+    </aside>
+
+    <header class="admin-topbar">
+      <button class="admin-topbar__toggle" id="adminNavToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+      <div class="admin-topbar__title">
+        <span class="eyebrow">Manage</span>
+        <h1>Bookings</h1>
+      </div>
+      <div class="admin-topbar__meta">
+        <span class="admin-topbar__clock" id="adminClock"></span>
+        <span class="admin-avatar">K</span>
+      </div>
+    </header>
+
+    <main class="admin-main" id="adminBookings">
+      <section class="admin-toolbar">
+        <div class="admin-filters" id="bookingFilters">
+          <button class="chip is-active" data-filter="all">All</button>
+          <button class="chip" data-filter="Pending">Pending</button>
+          <button class="chip" data-filter="Accepted">Accepted</button>
+          <button class="chip" data-filter="Preparing">Preparing</button>
+          <button class="chip" data-filter="Ready">Ready</button>
+          <button class="chip" data-filter="Completed">Completed</button>
+          <button class="chip" data-filter="Cancelled">Cancelled / Rejected</button>
+        </div>
+        <div class="admin-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="bookingSearch" placeholder="Search by ID, customer, or dish…" aria-label="Search bookings" />
+        </div>
+      </section>
+
+      <section class="admin-card admin-card--flush">
+        <div class="bookings-table-wrap">
+          <table class="bookings-table">
+            <thead>
+              <tr>
+                <th>Booking</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>When</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTbody"></tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" id="bookingsEmpty" hidden>
+          <div class="empty-state__icon">○</div>
+          <h3>No bookings match</h3>
+          <p>Try a different filter or search term.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      <span>© <span id="adminYear"></span> Aurum Kitchen · Admin panel</span>
+      <span>Frontend demo · Data in <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/customer.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
