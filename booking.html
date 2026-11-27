@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reserve Your Meal — Aurum Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/customer.css" />
+</head>
+<body>
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <header class="nav" id="siteNav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html" aria-label="Aurum Kitchen home">
+        <span class="nav__mark">A</span>
+        <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" data-nav>Home</a>
+        <a href="menu.html" data-nav>Menu</a>
+        <a href="my-bookings.html" data-nav>My Bookings</a>
+        <a href="admin/dashboard.html">Provider</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cart" href="cart.html" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="nav__badge" id="cartBadge">0</span>
+        </a>
+        <a class="btn btn--primary btn--sm magnetic" href="booking.html"><span>Book a Meal</span></a>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-section">
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">Confirm your order</span>
+        <h1>Reserve your <em class="serif-italic">meal</em></h1>
+        <p class="lede">Tell us when you'd like to eat. Your booking goes straight to the kitchen.</p>
+      </div>
+
+      <div class="booking-layout" id="bookingLayout">
+        <form class="booking-form" id="bookingForm" novalidate>
+          <fieldset class="form-section">
+            <legend>Your details</legend>
+
+            <div class="field" data-field="customerName">
+              <label class="field__label" for="customerName">Full name</label>
+              <input class="field__control" id="customerName" name="customerName" type="text" autocomplete="name" placeholder="e.g. Aarti Menon" required />
+              <span class="field__error"></span>
+            </div>
+
+            <div class="field" data-field="phone">
+              <label class="field__label" for="phone">Contact number</label>
+              <input class="field__control" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10" required />
+              <span class="field__error"></span>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>When</legend>
+
+            <div class="field" data-field="bookingDate">
+              <label class="field__label" for="bookingDate">Date</label>
+              <input class="field__control" id="bookingDate" name="bookingDate" type="date" required />
+              <span class="field__error"></span>
+            </div>
+
+            <div class="field" data-field="bookingTime">
+              <span class="field__label">Time slot</span>
+              <div class="timeslot-grid" id="timeSlots" role="radiogroup" aria-label="Time slot"></div>
+              <span class="field__error"></span>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Notes for the kitchen <span class="field__hint">(optional)</span></legend>
+            <div class="field">
+              <textarea class="field__control" id="notes" name="notes" rows="3" placeholder="Allergies, celebrations, dietary needs…"></textarea>
+            </div>
+          </fieldset>
+        </form>
+
+        <aside class="booking-summary" id="bookingSummary"></aside>
+      </div>
+
+      <div class="booking-confirm" id="bookingConfirm" hidden></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>© <span id="footerYear"></span> Aurum Kitchen.</span>
+        <span>Crafted with HTML, CSS &amp; Vanilla JavaScript.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/customer.js"></script>
+  <script src="js/booking.js"></script>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>

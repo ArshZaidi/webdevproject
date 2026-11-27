@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu — Aurum Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/customer.css" />
+</head>
+<body>
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <header class="nav" id="siteNav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html" aria-label="Aurum Kitchen home">
+        <span class="nav__mark">A</span>
+        <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" data-nav>Home</a>
+        <a href="menu.html" data-nav>Menu</a>
+        <a href="my-bookings.html" data-nav>My Bookings</a>
+        <a href="admin/dashboard.html">Provider</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cart" href="cart.html" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="nav__badge" id="cartBadge">0</span>
+        </a>
+        <a class="btn btn--primary btn--sm magnetic" href="booking.html"><span>Book a Meal</span></a>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="menu-page">
+    <section class="menu-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal="fade">The Menu</span>
+        <h1 data-reveal="up" data-reveal-delay="60">Seasonal <em class="serif-italic">plates</em>, cooked to order</h1>
+        <p class="lede" data-reveal="up" data-reveal-delay="120">
+          Browse by category, search by name, and open any dish for a closer look.
+          Availability is live — if it's sold out, you'll see it flagged.
+        </p>
+      </div>
+    </section>
+
+    <section class="menu-controls">
+      <div class="container">
+        <div class="menu-controls__inner">
+          <div class="menu-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" id="menuSearch" placeholder="Search dishes, ingredients…" aria-label="Search dishes" />
+          </div>
+          <div class="menu-filters" id="menuFilters" role="tablist" aria-label="Filter by category"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-grid-section">
+      <div class="container">
+        <div class="menu-meta" id="menuMeta" aria-live="polite"></div>
+        <div class="dish-grid" id="menuGrid"></div>
+        <div class="empty-state" id="menuEmpty" hidden>
+          <div class="empty-state__icon">○</div>
+          <h3>No dishes match</h3>
+          <p>Try a different keyword or clear the filters.</p>
+          <button class="btn btn--ghost btn--sm" id="clearFilters">Clear filters</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="nav__brand" href="index.html"><span class="nav__mark">A</span><span class="nav__wordmark">Aurum<em>Kitchen</em></span></a>
+          <p>A small seasonal kitchen. Every plate cooked to order.</p>
+        </div>
+        <div class="footer__col"><h4>Eat</h4><ul><li><a href="menu.html">Full menu</a></li><li><a href="booking.html">Book a meal</a></li><li><a href="cart.html">Your cart</a></li></ul></div>
+        <div class="footer__col"><h4>Account</h4><ul><li><a href="my-bookings.html">My bookings</a></li><li><a href="admin/dashboard.html">Provider login</a></li></ul></div>
+        <div class="footer__col"><h4>Kitchen</h4><ul><li><a href="#">Open daily · 11:00–22:00</a></li><li><a href="#">hello@aurumkitchen.example</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="footerYear"></span> Aurum Kitchen.</span>
+        <span>Crafted with HTML, CSS &amp; Vanilla JavaScript.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/customer.js"></script>
+  <script src="js/menu.js"></script>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>

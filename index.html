@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aurum Kitchen — Seasonal Food, Reserved in Advance</title>
+  <meta name="description" content="Aurum Kitchen is a seasonal kitchen where every dish is prepared to order and reserved in advance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/customer.css" />
+</head>
+<body>
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <header class="nav" id="siteNav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html" aria-label="Aurum Kitchen home">
+        <span class="nav__mark">A</span>
+        <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" data-nav>Home</a>
+        <a href="menu.html" data-nav>Menu</a>
+        <a href="my-bookings.html" data-nav>My Bookings</a>
+        <a href="admin/dashboard.html">Provider</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cart" href="cart.html" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z" />
+            <path d="M9 7a3 3 0 0 1 6 0" />
+          </svg>
+          <span class="nav__badge" id="cartBadge">0</span>
+        </a>
+        <a class="btn btn--primary btn--sm magnetic" href="booking.html"><span>Book a Meal</span></a>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <span class="eyebrow" data-reveal="fade">Seasonal kitchen · Est. 2019</span>
+          <h1 data-reveal="up" data-reveal-delay="80">
+            Food worth<br /><em class="serif-italic">reserving</em> ahead.
+          </h1>
+          <p class="lede" data-reveal="up" data-reveal-delay="180">
+            A small seasonal kitchen where every plate is cooked to order.
+            Browse the menu, build your booking, and watch the kitchen move it
+            from <strong>Pending</strong> to <strong>Ready</strong> in real time.
+          </p>
+          <div class="hero__actions" data-reveal="up" data-reveal-delay="260">
+            <a class="btn btn--primary magnetic" href="menu.html"><span>Explore Menu</span></a>
+            <a class="btn btn--ghost magnetic" href="booking.html"><span>Book Your Meal</span></a>
+          </div>
+          <dl class="hero__facts" data-reveal="fade" data-reveal-delay="340">
+            <div><dt>Kitchen hours</dt><dd>11:00 — 22:00</dd></div>
+            <div><dt>Advance notice</dt><dd>Same day · 2 hrs</dd></div>
+            <div><dt>Tables</dt><dd>Walk-in &amp; reserved</dd></div>
+          </dl>
+        </div>
+        <div class="hero__visual" data-reveal="scale" data-reveal-delay="120">
+          <div class="hero__frame parallax-frame">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80"
+                 alt="Plated seasonal dish on a dark ceramic plate"
+                 data-parallax="0.10" onerror="this.style.display='none'" />
+          </div>
+          <div class="hero__card">
+            <span class="hero__card-label">Tonight's kitchen</span>
+            <strong class="hero__card-value">14 bookings</strong>
+            <span class="hero__card-sub">in the queue right now</span>
+          </div>
+          <div class="hero__seal" aria-hidden="true">
+            <span>Reserve</span><span>Cook</span><span>Serve</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="marquee__item">Seasonal produce</span>
+        <span class="marquee__item">Cooked to order</span>
+        <span class="marquee__item">Advance booking</span>
+        <span class="marquee__item">Live kitchen status</span>
+        <span class="marquee__item">Seasonal produce</span>
+        <span class="marquee__item">Cooked to order</span>
+        <span class="marquee__item">Advance booking</span>
+        <span class="marquee__item">Live kitchen status</span>
+      </div>
+    </div>
+
+    <section class="section" id="featured">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head__text">
+            <span class="eyebrow" data-reveal="fade">From the kitchen</span>
+            <h2 data-reveal="up" data-reveal-delay="60">This week's <em class="serif-italic">signatures</em></h2>
+            <p data-reveal="up" data-reveal-delay="120">
+              A rotating selection from our seasonal menu. Availability updates
+              the moment the kitchen changes it.
+            </p>
+          </div>
+          <div class="rail-controls" data-reveal="fade">
+            <button class="rail-btn" id="railPrev" aria-label="Previous dishes">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <button class="rail-btn" id="railNext" aria-label="Next dishes">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="rail" id="featuredRail" aria-live="polite"></div>
+        <div class="section-cta" data-reveal="fade">
+          <a class="btn btn--ghost magnetic" href="menu.html"><span>View the full menu</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head__text">
+            <span class="eyebrow" data-reveal="fade">How it works</span>
+            <h2 data-reveal="up" data-reveal-delay="60">Three steps to a <em class="serif-italic">reserved</em> table</h2>
+          </div>
+        </div>
+        <ol class="how__grid">
+          <li class="how__step" data-reveal="up">
+            <span class="how__num">01</span>
+            <h3>Browse &amp; choose</h3>
+            <p>Filter the menu by category, search by name, and open any dish for the full detail.</p>
+          </li>
+          <li class="how__step" data-reveal="up" data-reveal-delay="120">
+            <span class="how__num">02</span>
+            <h3>Build your booking</h3>
+            <p>Add dishes to the cart, adjust quantities, then pick a date and a time slot.</p>
+          </li>
+          <li class="how__step" data-reveal="up" data-reveal-delay="240">
+            <span class="how__num">03</span>
+            <h3>Track it live</h3>
+            <p>Your booking appears instantly in the kitchen dashboard. Watch the status change as it's cooked.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section why">
+      <div class="container">
+        <div class="why__grid">
+          <div class="why__copy">
+            <span class="eyebrow" data-reveal="fade">Why Aurum</span>
+            <h2 data-reveal="up" data-reveal-delay="60">Built for people who <em class="serif-italic">plan</em> their meals</h2>
+            <p class="lede" data-reveal="up" data-reveal-delay="120">
+              No queues, no guesswork. Reserve what you want, when you want it,
+              and let the kitchen do the rest.
+            </p>
+          </div>
+          <ul class="why__list">
+            <li data-reveal="right">
+              <h4>Real-time status</h4>
+              <p>Pending, Accepted, Preparing, Ready, Completed — updated by the kitchen, visible to you.</p>
+            </li>
+            <li data-reveal="right" data-reveal-delay="100">
+              <h4>Honest availability</h4>
+              <p>Sold-out dishes are flagged immediately and can't be booked by mistake.</p>
+            </li>
+            <li data-reveal="right" data-reveal-delay="200">
+              <h4>Cancel with control</h4>
+              <p>Change your mind before the kitchen starts cooking. After that, your slot is locked in.</p>
+            </li>
+            <li data-reveal="right" data-reveal-delay="300">
+              <h4>Simple pricing</h4>
+              <p>What you see on the card is what you pay. Totals update live as you adjust quantities.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-band">
+      <div class="container stats-band__inner">
+        <div class="stat"><span class="stat__value" id="statDishes" data-counter="0">0</span><span class="stat__label">Dishes on the menu</span></div>
+        <div class="stat"><span class="stat__value" id="statBookings" data-counter="0">0</span><span class="stat__label">Bookings placed</span></div>
+        <div class="stat"><span class="stat__value" id="statCompleted" data-counter="0">0</span><span class="stat__label">Plates served</span></div>
+        <div class="stat"><span class="stat__value" id="statGuests" data-counter="0">0</span><span class="stat__label">Happy guests</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a class="nav__brand" href="index.html">
+            <span class="nav__mark">A</span>
+            <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+          </a>
+          <p>A small seasonal kitchen. Every plate cooked to order, every booking tracked in real time.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Eat</h4>
+          <ul>
+            <li><a href="menu.html">Full menu</a></li>
+            <li><a href="booking.html">Book a meal</a></li>
+            <li><a href="cart.html">Your cart</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="my-bookings.html">My bookings</a></li>
+            <li><a href="admin/dashboard.html">Provider login</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Kitchen</h4>
+          <ul>
+            <li><a href="#">Open daily · 11:00–22:00</a></li>
+            <li><a href="#">hello@aurumkitchen.example</a></li>
+            <li><a href="#">+91 98765 43210</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="footerYear"></span> Aurum Kitchen. A demonstration project.</span>
+        <span>Crafted with HTML, CSS &amp; Vanilla JavaScript.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/customer.js"></script>
+  <script>
+    // Page-specific: featured rail arrows + footer year
+    document.addEventListener('DOMContentLoaded', function () {
+      var y = document.getElementById('footerYear');
+      if (y) y.textContent = new Date().getFullYear();
+
+      var rail = document.getElementById('featuredRail');
+      var prev = document.getElementById('railPrev');
+      var next = document.getElementById('railNext');
+      var step = 340;
+
+      if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step * 2, behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { rail.scrollBy({ left: step * 2, behavior: 'smooth' }); });
+    });
+  </script>
+</body>
+</html>
