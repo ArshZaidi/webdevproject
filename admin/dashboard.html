@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Provider Console</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-mark">F</div>
+        <div class="admin-brand-text">Food Management<small>Provider Console</small></div>
+      </div>
+      <nav class="admin-nav">
+        <div class="admin-nav-label">Overview</div>
+        <a href="dashboard.html" class="active">◈ Dashboard</a>
+        <a href="bookings.html">◈ Bookings</a>
+        <div class="admin-nav-label">Management</div>
+        <a href="menu-management.html">◈ Menu</a>
+        <a href="availability.html">◈ Availability</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        Demo Provider Access<br />
+        <a href="../index.html">← Back to Storefront</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:var(--s-3);">
+          <button class="admin-toggle" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
+          <div>
+            <h1>Dashboard</h1>
+            <div class="admin-topbar-sub">Live snapshot of today's kitchen operations</div>
+          </div>
+        </div>
+        <div class="admin-topbar-actions">
+          <div class="admin-avatar">KP</div>
+        </div>
+      </header>
+
+      <main class="admin-content">
+        <!-- Stat cards -->
+        <section class="stat-grid">
+          <div class="stat-card reveal">
+            <div class="stat-card-label">Total Bookings</div>
+            <div class="stat-card-value" data-count="0" id="statTotal">0</div>
+            <div class="stat-card-meta">All-time records</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-card-label">Pending</div>
+            <div class="stat-card-value" data-count="0" id="statPending">0</div>
+            <div class="stat-card-meta">Awaiting confirmation</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-card-label">Accepted</div>
+            <div class="stat-card-value" data-count="0" id="statAccepted">0</div>
+            <div class="stat-card-meta">Confirmed for service</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-card-label">Completed</div>
+            <div class="stat-card-value" data-count="0" id="statCompleted">0</div>
+            <div class="stat-card-meta">Served orders</div>
+          </div>
+          <div class="stat-card gold reveal">
+            <div class="stat-card-label">Total Value</div>
+            <div class="stat-card-value" data-count="0" data-prefix="₹" id="statValue">₹0</div>
+            <div class="stat-card-meta">Gross booking amount</div>
+          </div>
+        </section>
+
+        <!-- Status flow -->
+        <section class="panel reveal">
+          <div class="panel-header"><h2>Booking Pipeline</h2></div>
+          <div class="panel-body">
+            <div class="status-flow" id="statusFlow"></div>
+          </div>
+        </section>
+
+        <!-- Pending preview + popular -->
+        <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-5);" class="dash-grid">
+          <section class="panel reveal">
+            <div class="panel-header">
+              <h2>Needs Attention</h2>
+              <a href="bookings.html" class="btn btn-ghost btn-sm">View all</a>
+            </div>
+            <div class="panel-body no-pad" id="pendingPreview"></div>
+          </section>
+
+          <section class="panel reveal">
+            <div class="panel-header"><h2>Popular Dishes</h2></div>
+            <div class="panel-body">
+              <div class="bar-chart" id="popularChart"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Admin.initShell();
+      Admin.renderDashboard();
+    });
+  </script>
+</body>
+</html>
