@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Management — Provider Console</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-mark">F</div>
+        <div class="admin-brand-text">Food Management<small>Provider Console</small></div>
+      </div>
+      <nav class="admin-nav">
+        <div class="admin-nav-label">Overview</div>
+        <a href="dashboard.html">◈ Dashboard</a>
+        <a href="bookings.html">◈ Bookings</a>
+        <div class="admin-nav-label">Management</div>
+        <a href="menu-management.html" class="active">◈ Menu</a>
+        <a href="availability.html">◈ Availability</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        Demo Provider Access<br />
+        <a href="../index.html">← Back to Storefront</a>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:var(--s-3);">
+          <button class="admin-toggle" id="sidebarToggle">☰</button>
+          <div>
+            <h1>Menu Management</h1>
+            <div class="admin-topbar-sub">Add, edit and archive your kitchen's dishes</div>
+          </div>
+        </div>
+        <div class="admin-topbar-actions">
+          <button class="btn btn-primary btn-sm" id="addMenuItemBtn">+ Add Dish</button>
+        </div>
+      </header>
+
+      <main class="admin-content">
+        <div class="filter-bar">
+          <div class="filter-bar" id="categoryChips" style="margin-bottom:0;"></div>
+          <input type="text" class="search-input" id="menuSearch" placeholder="Search dishes…" />
+        </div>
+        <div class="menu-admin-grid" id="menuGrid"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Menu item modal -->
+  <div class="modal-backdrop" id="menuModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="menuModalTitle">Add Dish</h3>
+        <button class="modal-close" data-close-modal>&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="menuForm" novalidate>
+          <input type="hidden" id="menuId" />
+          <div class="field">
+            <label for="menuName">Name</label>
+            <input type="text" id="menuName" required placeholder="e.g. Saffron Seafood Paella" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3);">
+            <div class="field">
+              <label for="menuCategory">Category</label>
+              <select id="menuCategory" required></select>
+            </div>
+            <div class="field">
+              <label for="menuPrice">Price (₹)</label>
+              <input type="number" id="menuPrice" min="1" step="1" required placeholder="0" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="menuImage">Image URL</label>
+            <input type="url" id="menuImage" placeholder="https://…" />
+          </div>
+          <div class="field">
+            <label for="menuDescription">Description</label>
+            <textarea id="menuDescription" rows="3" placeholder="Describe the dish…"></textarea>
+          </div>
+          <label class="availability-toggle" style="margin-top:var(--s-2);">
+            <span class="toggle-switch on" id="menuAvailToggle"></span>
+            <input type="checkbox" id="menuAvailable" checked style="display:none;" />
+            Available for booking
+          </label>
+        </form>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost btn-sm" data-close-modal>Cancel</button>
+        <button class="btn btn-primary btn-sm" id="menuSaveBtn">Save Dish</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/animations.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Admin.initShell();
+      Admin.renderMenuManagement();
+    });
+  </script>
+</body>
+</html>
