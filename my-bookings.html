@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Bookings — Aurum Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/customer.css" />
+</head>
+<body>
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <header class="nav" id="siteNav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html" aria-label="Aurum Kitchen home">
+        <span class="nav__mark">A</span>
+        <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" data-nav>Home</a>
+        <a href="menu.html" data-nav>Menu</a>
+        <a href="my-bookings.html" data-nav>My Bookings</a>
+        <a href="admin/dashboard.html">Provider</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cart" href="cart.html" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="nav__badge" id="cartBadge">0</span>
+        </a>
+        <a class="btn btn--primary btn--sm magnetic" href="booking.html"><span>Book a Meal</span></a>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-section">
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">Your history</span>
+        <h1>My <em class="serif-italic">bookings</em></h1>
+        <p class="lede">Track every booking you've placed. Statuses update live as the kitchen works through them.</p>
+      </div>
+
+      <div class="bookings-filter" id="bookingsFilter">
+        <button class="chip is-active" data-filter="all">All</button>
+        <button class="chip" data-filter="active">Active</button>
+        <button class="chip" data-filter="completed">Completed</button>
+        <button class="chip" data-filter="cancelled">Cancelled</button>
+      </div>
+
+      <div class="bookings-list" id="bookingsList" aria-live="polite"></div>
+
+      <div class="empty-state empty-state--lg" id="bookingsEmpty" hidden>
+        <div class="empty-state__icon">○</div>
+        <h3>No bookings yet</h3>
+        <p>Your reserved meals will appear here once you place a booking.</p>
+        <a class="btn btn--primary magnetic" href="menu.html"><span>Start a booking</span></a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>© <span id="footerYear"></span> Aurum Kitchen.</span>
+        <span>Crafted with HTML, CSS &amp; Vanilla JavaScript.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/customer.js"></script>
+  <script src="js/booking.js"></script>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dish — Aurum Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/customer.css" />
+</head>
+<body>
+  <div class="page-veil" aria-hidden="true"></div>
+
+  <header class="nav is-stuck" id="siteNav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html" aria-label="Aurum Kitchen home">
+        <span class="nav__mark">A</span>
+        <span class="nav__wordmark">Aurum<em>Kitchen</em></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" data-nav>Home</a>
+        <a href="menu.html" data-nav>Menu</a>
+        <a href="my-bookings.html" data-nav>My Bookings</a>
+        <a href="admin/dashboard.html">Provider</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="nav__cart" href="cart.html" aria-label="View cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span class="nav__badge" id="cartBadge">0</span>
+        </a>
+        <a class="btn btn--primary btn--sm magnetic" href="booking.html"><span>Book a Meal</span></a>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="dishPage" class="dish-page">
+    <div class="container">
+      <a class="back-link" href="menu.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 5l-7 7 7 7"/></svg>
+        Back to menu
+      </a>
+
+      <div class="dish-detail" id="dishDetail"></div>
+
+      <section class="section--tight" id="relatedSection" hidden>
+        <div class="section-head">
+          <div class="section-head__text">
+            <span class="eyebrow">You may also like</span>
+            <h2>More from the <em class="serif-italic">kitchen</em></h2>
+          </div>
+        </div>
+        <div class="dish-grid" id="relatedGrid"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <span>© <span id="footerYear"></span> Aurum Kitchen.</span>
+        <span>Crafted with HTML, CSS &amp; Vanilla JavaScript.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/customer.js"></script>
+  <script src="js/menu.js"></script>
+  <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
