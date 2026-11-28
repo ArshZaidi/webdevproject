@@ -588,3 +588,119 @@
   }
 
 })(window);
+
+
+  /* ---------- PREMIUM INTERACTIONS ---------- */
+
+  function initPremiumInteractions(root) {
+    if (reduceMotion) return;
+
+    var scope = root || document;
+
+    var canHover = global.matchMedia(
+      '(hover: hover) and (pointer: fine)'
+    ).matches;
+
+    if (!canHover) return;
+
+    var selectors = [
+      '.dish-card',
+      '.how__step',
+      '.hero__card',
+      '.admin-card',
+      '.metric-card',
+      '.booking-card'
+    ];
+
+    scope.querySelectorAll(selectors.join(',')).forEach(function (el) {
+      if (el.dataset.premiumBound === '1') return;
+
+      el.dataset.premiumBound = '1';
+      el.classList.add('pointer-glow');
+
+      // Mouse-following liquid light.
+      el.addEventListener('pointermove', function (e) {
+        var rect = el.getBoundingClientRect();
+
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        el.style.setProperty('--pointer-x', x + '%');
+        el.style.setProperty('--pointer-y', y + '%');
+      });
+
+      // Restrict 3D tilt to cards that do not already use magnetic movement.
+      if (
+        el.classList.contains('magnetic') ||
+        el.closest('.magnetic')
+      ) return;
+
+      var frame = null;
+      var rotateX = 0;
+      var rotateY = 0;
+      var currentX = 0;
+      var currentY = 0;
+      var active = false;
+
+      function renderTilt() {
+        currentX += (rotateX - currentX) * 0.12;
+        currentY += (rotateY - currentY) * 0.12;
+
+        el.style.transform =
+          'perspective(1000px) ' +
+          'rotateX(' + currentX.toFixed(2) + 'deg) ' +
+          'rotateY(' + currentY.toFixed(2) + 'deg) ' +
+          'translateY(-4px)';
+
+        if (
+          Math.abs(rotateX - currentX) > 0.02 ||
+          Math.abs(rotateY - currentY) > 0.02
+        ) {
+          frame = global.requestAnimationFrame(renderTilt);
+        } else {
+          frame = null;
+        }
+      }
+
+      function startTilt() {
+        if (frame === null) {
+          frame = global.requestAnimationFrame(renderTilt);
+        }
+      }
+
+      el.addEventListener('pointerenter', function () {
+        active = true;
+        el.classList.add('tilt-card');
+      });
+
+      el.addEventListener('pointermove', function (e) {
+        if (!active) return;
+
+        var rect = el.getBoundingClientRect();
+
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top) / rect.height;
+
+        rotateY = (x - 0.5) * 7;
+        rotateX = (0.5 - y) * 7;
+
+        startTilt();
+      });
+
+      el.addEventListener('pointerleave', function () {
+        active = false;
+        rotateX = 0;
+        rotateY = 0;
+        startTilt();
+
+        el.classList.remove('tilt-card');
+
+        // Remove the inline transform after the return animation.
+        global.setTimeout(function () {
+          if (!active) {
+            el.style.removeProperty('transform');
+          }
+        }, 650);
+      });
+    });
+  }
