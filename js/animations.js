@@ -1,7 +1,8 @@
 
 /* =========================================================================
-   animations.js — SHARED MOTION ENGINE
-   Smooth scrolling + magnetic interactions + existing motion effects
+   AURUM KITCHEN — PREMIUM MOTION ENGINE
+   Smooth scrolling, reveals, magnetic buttons, ambient lighting,
+   pointer-following reflections and restrained 3D card tilt.
    ========================================================================= */
 
 (function (global) {
@@ -13,8 +14,29 @@
 
   var lenis = null;
   var lenisLoading = false;
+  var revealObserver = null;
+  var parallaxNodes = [];
+  var scaleNodes = [];
+  var ticking = false;
 
-  /* ---------- 1. LENIS SMOOTH SCROLL ---------- */
+  /* ---------- 1. AMBIENT LIGHT LAYER ---------- */
+
+  function initAmbientLight() {
+    if (document.querySelector('.fm-ambient')) return;
+
+    var ambient = document.createElement('div');
+    ambient.className = 'fm-ambient';
+    ambient.setAttribute('aria-hidden', 'true');
+
+    ambient.innerHTML =
+      '<span class="fm-ambient__orb fm-ambient__orb--gold"></span>' +
+      '<span class="fm-ambient__orb fm-ambient__orb--green"></span>' +
+      '<span class="fm-ambient__orb fm-ambient__orb--cream"></span>';
+
+    document.body.prepend(ambient);
+  }
+
+  /* ---------- 2. LENIS SMOOTH SCROLL ---------- */
 
   function addLenisStyles() {
     if (document.getElementById('fm-lenis-styles')) return;
@@ -39,10 +61,6 @@
       .lenis.lenis-stopped {
         overflow: hidden;
       }
-
-      .lenis.lenis-smooth iframe {
-        pointer-events: none;
-      }
     `;
 
     document.head.appendChild(style);
@@ -51,7 +69,6 @@
   function startLenis() {
     if (reduceMotion || lenis || lenisLoading) return;
 
-    // Load Lenis dynamically. No HTML script-tag change is required.
     if (global.Lenis) {
       createLenis();
       return;
@@ -70,13 +87,13 @@
       if (global.Lenis) {
         createLenis();
       } else {
-        console.warn('Lenis loaded, but its constructor was not found.');
+        console.warn('Lenis constructor was not found.');
       }
     };
 
     script.onerror = function () {
       lenisLoading = false;
-      console.warn('Lenis could not load. Using native smooth scrolling.');
+      console.warn('Lenis failed to load. Native scrolling remains enabled.');
     };
 
     document.head.appendChild(script);
@@ -88,43 +105,38 @@
     addLenisStyles();
 
     lenis = new global.Lenis({
-      duration: 1.2,
+      duration: 1.15,
       easing: function (t) {
         return Math.min(1, 1.001 - Math.pow(2, -10 * t));
       },
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.4,
       infinite: false,
       autoRaf: true
     });
 
-    // Keep the scroll-dependent effects in sync with Lenis.
     lenis.on('scroll', function () {
       updateScrollTransforms();
       updateStickyNav();
     });
 
-    // Handle links clicked before Lenis finished loading.
     if (global.location.hash) {
-      var initialTarget = document.getElementById(
-        decodeURIComponent(global.location.hash.substring(1))
-      );
+      var id = global.location.hash.substring(1);
+      var target = document.getElementById(id);
 
-      if (initialTarget) {
-        lenis.scrollTo(initialTarget, {
-          offset: -96,
+      if (target) {
+        lenis.scrollTo(target, {
+          offset: -100,
           immediate: true
         });
       }
     }
   }
 
-  /* ---------- 2. SCROLL REVEALS ---------- */
-
-  var revealObserver = null;
+  /* ---------- 3. SCROLL REVEALS ---------- */
 
   function buildRevealObserver() {
     if (!('IntersectionObserver' in global)) return null;
@@ -133,13 +145,12 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
 
-        var el = entry.target;
-        el.classList.add('is-visible');
-        revealObserver.unobserve(el);
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
       });
     }, {
       root: null,
-      rootMargin: '0px 0px -12% 0px',
+      rootMargin: '0px 0px -10% 0px',
       threshold: 0.08
     });
   }
@@ -170,10 +181,7 @@
     });
   }
 
-  /* ---------- 3. PARALLAX + SCROLL SCALE ---------- */
-
-  var parallaxNodes = [];
-  var scaleNodes = [];
+  /* ---------- 4. PARALLAX AND SCROLL SCALE ---------- */
 
   function collectScrollTargets() {
     parallaxNodes = Array.prototype.slice.call(
@@ -190,7 +198,7 @@
 
     parallaxNodes.forEach(function (el) {
       var speed =
-        parseFloat(el.getAttribute('data-parallax')) || 0.15;
+        parseFloat(el.getAttribute('data-parallax')) || 0.12;
 
       var rect = el.getBoundingClientRect();
 
@@ -198,15 +206,15 @@
 
       var offset = (rect.top + rect.height / 2) - vh / 2;
 
-      el.style.transform =
-        'translate3d(0,' +
-        (-offset * speed).toFixed(2) +
-        'px,0)';
+      el.style.setProperty(
+        '--parallax-y',
+        (-offset * speed).toFixed(2) + 'px'
+      );
     });
 
     scaleNodes.forEach(function (el) {
       var amount =
-        parseFloat(el.getAttribute('data-scale')) || 0.08;
+        parseFloat(el.getAttribute('data-scale')) || 0.06;
 
       var rect = el.getBoundingClientRect();
 
@@ -219,13 +227,18 @@
 
       var scale = 1 + amount * (1 - progress);
 
-      el.style.transform = 'scale(' + scale.toFixed(4) + ')';
+      el.style.setProperty('--scroll-scale', scale.toFixed(4));
     });
   }
 
-  /* ---------- 4. SCROLL LOOP + STICKY NAV ---------- */
+  /* ---------- 5. STICKY NAVIGATION ---------- */
 
-  var ticking = false;
+  function updateStickyNav() {
+    var nav = document.getElementById('siteNav');
+    if (!nav) return;
+
+    nav.classList.toggle('is-stuck', global.scrollY > 24);
+  }
 
   function onScroll() {
     if (ticking) return;
@@ -239,30 +252,16 @@
     });
   }
 
-  function updateStickyNav() {
-    var nav = document.getElementById('siteNav');
-
-    if (!nav) return;
-
-    if (global.scrollY > 24) {
-      nav.classList.add('is-stuck');
-    } else {
-      nav.classList.remove('is-stuck');
-    }
-  }
-
-  /* ---------- 5. SMOOTH MAGNETIC BUTTONS ---------- */
+  /* ---------- 6. MAGNETIC BUTTONS ---------- */
 
   function initMagnetic(root) {
     if (reduceMotion) return;
 
-    // Magnetic movement is intended for mouse/trackpad devices.
-    if (!global.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      return;
-    }
+    if (!global.matchMedia(
+      '(hover: hover) and (pointer: fine)'
+    ).matches) return;
 
     var scope = root || document;
-    var strength = 0.28;
 
     scope.querySelectorAll('.magnetic').forEach(function (el) {
       if (el.dataset.magneticBound === '1') return;
@@ -275,63 +274,110 @@
       var currentY = 0;
       var rafId = null;
 
-      function animateMagnet() {
+      function animate() {
         currentX += (targetX - currentX) * 0.16;
         currentY += (targetY - currentY) * 0.16;
 
-        el.style.transform =
-          'translate3d(' +
-          currentX.toFixed(2) +
-          'px,' +
-          currentY.toFixed(2) +
-          'px,0)';
+        el.style.setProperty('--mag-x', currentX.toFixed(2) + 'px');
+        el.style.setProperty('--mag-y', currentY.toFixed(2) + 'px');
 
-        var distance =
+        if (
           Math.abs(targetX - currentX) +
-          Math.abs(targetY - currentY);
-
-        if (distance > 0.1) {
-          rafId = global.requestAnimationFrame(animateMagnet);
+          Math.abs(targetY - currentY) > 0.1
+        ) {
+          rafId = global.requestAnimationFrame(animate);
         } else {
           currentX = targetX;
           currentY = targetY;
-          el.style.transform =
-            'translate3d(' +
-            currentX +
-            'px,' +
-            currentY +
-            'px,0)';
-
           rafId = null;
         }
       }
 
-      function startAnimation() {
-        if (rafId !== null) return;
-        rafId = global.requestAnimationFrame(animateMagnet);
+      function start() {
+        if (rafId === null) {
+          rafId = global.requestAnimationFrame(animate);
+        }
       }
 
-      el.addEventListener('mousemove', function (e) {
+      el.addEventListener('pointermove', function (e) {
         var rect = el.getBoundingClientRect();
 
         targetX =
-          (e.clientX - rect.left - rect.width / 2) * strength;
+          (e.clientX - rect.left - rect.width / 2) * 0.22;
 
         targetY =
-          (e.clientY - rect.top - rect.height / 2) * strength;
+          (e.clientY - rect.top - rect.height / 2) * 0.22;
 
-        startAnimation();
+        start();
       });
 
-      el.addEventListener('mouseleave', function () {
+      el.addEventListener('pointerleave', function () {
         targetX = 0;
         targetY = 0;
-        startAnimation();
+        start();
       });
     });
   }
 
-  /* ---------- 6. ANIMATED COUNTERS ---------- */
+  /* ---------- 7. PREMIUM CARD INTERACTIONS ---------- */
+
+  function initPremiumInteractions(root) {
+    if (reduceMotion) return;
+
+    if (!global.matchMedia(
+      '(hover: hover) and (pointer: fine)'
+    ).matches) return;
+
+    var scope = root || document;
+
+    var selectors = [
+      '.dish-card',
+      '.how__step',
+      '.hero__card',
+      '.admin-card',
+      '.metric-card',
+      '.booking-card'
+    ].join(',');
+
+    scope.querySelectorAll(selectors).forEach(function (el) {
+      if (el.dataset.premiumBound === '1') return;
+
+      el.dataset.premiumBound = '1';
+      el.classList.add('premium-card');
+
+      el.addEventListener('pointermove', function (e) {
+        var rect = el.getBoundingClientRect();
+
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        el.style.setProperty('--pointer-x', x + '%');
+        el.style.setProperty('--pointer-y', y + '%');
+
+        if (el.classList.contains('hero__card')) return;
+
+        var normalizedX = (x / 100) - 0.5;
+        var normalizedY = (y / 100) - 0.5;
+
+        el.style.setProperty(
+          '--tilt-x',
+          (-normalizedY * 5).toFixed(2) + 'deg'
+        );
+
+        el.style.setProperty(
+          '--tilt-y',
+          (normalizedX * 5).toFixed(2) + 'deg'
+        );
+      });
+
+      el.addEventListener('pointerleave', function () {
+        el.style.setProperty('--tilt-x', '0deg');
+        el.style.setProperty('--tilt-y', '0deg');
+      });
+    });
+  }
+
+  /* ---------- 8. ANIMATED COUNTERS ---------- */
 
   function animateCounter(el) {
     var target =
@@ -339,14 +385,15 @@
 
     var suffix = el.getAttribute('data-suffix') || '';
     var prefix = el.getAttribute('data-prefix') || '';
-    var duration = 1500;
-    var start = null;
 
     if (reduceMotion) {
       el.textContent =
         prefix + target.toLocaleString('en-IN') + suffix;
       return;
     }
+
+    var start = null;
+    var duration = 1500;
 
     function step(timestamp) {
       if (start === null) start = timestamp;
@@ -387,89 +434,86 @@
       return;
     }
 
-    var io = new IntersectionObserver(function (entries) {
+    var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
 
         entry.target.setAttribute('data-counted', '1');
         animateCounter(entry.target);
-        io.unobserve(entry.target);
+        observer.unobserve(entry.target);
       });
     }, {
       threshold: 0.4
     });
 
     nodes.forEach(function (el) {
-      io.observe(el);
+      observer.observe(el);
     });
   }
 
-  /* ---------- 7. CUSTOM CURSOR ---------- */
+  /* ---------- 9. CUSTOM CURSOR ---------- */
 
   function initCursor() {
     if (reduceMotion) return;
 
     if (!global.matchMedia(
       '(hover: hover) and (pointer: fine)'
-    ).matches) {
-      return;
-    }
+    ).matches) return;
 
-    // Prevent duplicate cursors.
     if (document.querySelector('.fm-cursor')) return;
 
-    var dot = document.createElement('div');
-    dot.className = 'fm-cursor';
-    dot.setAttribute('aria-hidden', 'true');
-
-    document.body.appendChild(dot);
+    var cursor = document.createElement('div');
+    cursor.className = 'fm-cursor';
+    cursor.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(cursor);
 
     var mouseX = -100;
     var mouseY = -100;
     var currentX = -100;
     var currentY = -100;
+    var started = false;
 
     function render() {
-      currentX += (mouseX - currentX) * 0.18;
-      currentY += (mouseY - currentY) * 0.18;
+      currentX += (mouseX - currentX) * 0.2;
+      currentY += (mouseY - currentY) * 0.2;
 
-      dot.style.transform =
+      cursor.style.transform =
         'translate3d(' +
-        (currentX - dot.offsetWidth / 2) +
-        'px,' +
-        (currentY - dot.offsetHeight / 2) +
-        'px,0)';
+        (currentX - cursor.offsetWidth / 2) + 'px,' +
+        (currentY - cursor.offsetHeight / 2) + 'px,0)';
 
       global.requestAnimationFrame(render);
     }
 
-    var cursorStarted = false;
-
-    document.addEventListener('mousemove', function (e) {
+    document.addEventListener('pointermove', function (e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
 
-      if (!cursorStarted) {
-        cursorStarted = true;
-        dot.classList.add('is-active');
+      if (!started) {
+        started = true;
+        cursor.classList.add('is-active');
         render();
       }
     });
 
-    document.addEventListener('mouseleave', function () {
-      dot.classList.remove('is-active');
+    document.addEventListener('pointerleave', function () {
+      cursor.classList.remove('is-active');
     });
 
-    document.addEventListener('mouseover', function (e) {
-      var interactive = e.target.closest(
-        'a, button, .dish-card, .qty-btn, input, select, textarea'
+    document.addEventListener('pointerover', function (e) {
+      var target = e.target;
+
+      if (!target.closest) return;
+
+      var interactive = target.closest(
+        'a, button, input, select, textarea, .dish-card'
       );
 
-      dot.classList.toggle('is-hover', !!interactive);
+      cursor.classList.toggle('is-hover', !!interactive);
     });
   }
 
-  /* ---------- 8. SMOOTH IN-PAGE ANCHORS ---------- */
+  /* ---------- 10. SMOOTH IN-PAGE ANCHORS ---------- */
 
   function initSmoothAnchors() {
     document.addEventListener('click', function (e) {
@@ -478,7 +522,6 @@
       if (!link) return;
 
       var hash = link.getAttribute('href');
-
       if (!hash || hash === '#') return;
 
       var targetId;
@@ -490,26 +533,23 @@
       }
 
       var target = document.getElementById(targetId);
-
       if (!target) return;
 
       e.preventDefault();
 
-      // Update the URL without triggering an instant browser jump.
       if (global.location.hash !== hash) {
         global.history.pushState(null, '', hash);
       }
 
       if (lenis) {
         lenis.scrollTo(target, {
-          offset: -96,
-          duration: 1.2
+          offset: -100,
+          duration: 1.15
         });
       } else {
         var top =
           target.getBoundingClientRect().top +
-          global.scrollY -
-          96;
+          global.scrollY - 100;
 
         global.scrollTo({
           top: top,
@@ -519,20 +559,22 @@
     });
   }
 
-  /* ---------- 9. BOOT ---------- */
+  /* ---------- 11. INITIALIZATION ---------- */
 
   function init() {
+    initAmbientLight();
+
     revealObserver = buildRevealObserver();
 
     collectScrollTargets();
     observeReveals(document);
     initMagnetic(document);
+    initPremiumInteractions(document);
     initCounters(document);
     initCursor();
     initSmoothAnchors();
     updateStickyNav();
 
-    // Start Lenis after the rest of the animations are initialized.
     startLenis();
 
     global.addEventListener('scroll', onScroll, {
@@ -547,14 +589,14 @@
     updateScrollTransforms();
   }
 
-  /* ---------- 10. PUBLIC API ---------- */
+  /* ---------- 12. PUBLIC API ---------- */
 
   global.FMAnim = {
     observeReveals: observeReveals,
     initMagnetic: initMagnetic,
     initCounters: initCounters,
+    initPremiumInteractions: initPremiumInteractions,
 
-    // Useful if another script needs to scroll programmatically.
     scrollTo: function (target, options) {
       if (lenis) {
         lenis.scrollTo(target, options || {});
@@ -573,6 +615,7 @@
     refresh: function (root) {
       observeReveals(root);
       initMagnetic(root);
+      initPremiumInteractions(root);
       initCounters(root);
       collectScrollTargets();
       updateScrollTransforms();
@@ -588,119 +631,3 @@
   }
 
 })(window);
-
-
-  /* ---------- PREMIUM INTERACTIONS ---------- */
-
-  function initPremiumInteractions(root) {
-    if (reduceMotion) return;
-
-    var scope = root || document;
-
-    var canHover = global.matchMedia(
-      '(hover: hover) and (pointer: fine)'
-    ).matches;
-
-    if (!canHover) return;
-
-    var selectors = [
-      '.dish-card',
-      '.how__step',
-      '.hero__card',
-      '.admin-card',
-      '.metric-card',
-      '.booking-card'
-    ];
-
-    scope.querySelectorAll(selectors.join(',')).forEach(function (el) {
-      if (el.dataset.premiumBound === '1') return;
-
-      el.dataset.premiumBound = '1';
-      el.classList.add('pointer-glow');
-
-      // Mouse-following liquid light.
-      el.addEventListener('pointermove', function (e) {
-        var rect = el.getBoundingClientRect();
-
-        var x = ((e.clientX - rect.left) / rect.width) * 100;
-        var y = ((e.clientY - rect.top) / rect.height) * 100;
-
-        el.style.setProperty('--pointer-x', x + '%');
-        el.style.setProperty('--pointer-y', y + '%');
-      });
-
-      // Restrict 3D tilt to cards that do not already use magnetic movement.
-      if (
-        el.classList.contains('magnetic') ||
-        el.closest('.magnetic')
-      ) return;
-
-      var frame = null;
-      var rotateX = 0;
-      var rotateY = 0;
-      var currentX = 0;
-      var currentY = 0;
-      var active = false;
-
-      function renderTilt() {
-        currentX += (rotateX - currentX) * 0.12;
-        currentY += (rotateY - currentY) * 0.12;
-
-        el.style.transform =
-          'perspective(1000px) ' +
-          'rotateX(' + currentX.toFixed(2) + 'deg) ' +
-          'rotateY(' + currentY.toFixed(2) + 'deg) ' +
-          'translateY(-4px)';
-
-        if (
-          Math.abs(rotateX - currentX) > 0.02 ||
-          Math.abs(rotateY - currentY) > 0.02
-        ) {
-          frame = global.requestAnimationFrame(renderTilt);
-        } else {
-          frame = null;
-        }
-      }
-
-      function startTilt() {
-        if (frame === null) {
-          frame = global.requestAnimationFrame(renderTilt);
-        }
-      }
-
-      el.addEventListener('pointerenter', function () {
-        active = true;
-        el.classList.add('tilt-card');
-      });
-
-      el.addEventListener('pointermove', function (e) {
-        if (!active) return;
-
-        var rect = el.getBoundingClientRect();
-
-        var x = (e.clientX - rect.left) / rect.width;
-        var y = (e.clientY - rect.top) / rect.height;
-
-        rotateY = (x - 0.5) * 7;
-        rotateX = (0.5 - y) * 7;
-
-        startTilt();
-      });
-
-      el.addEventListener('pointerleave', function () {
-        active = false;
-        rotateX = 0;
-        rotateY = 0;
-        startTilt();
-
-        el.classList.remove('tilt-card');
-
-        // Remove the inline transform after the return animation.
-        global.setTimeout(function () {
-          if (!active) {
-            el.style.removeProperty('transform');
-          }
-        }, 650);
-      });
-    });
-  }
